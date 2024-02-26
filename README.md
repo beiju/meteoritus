@@ -33,7 +33,7 @@ Meteoritus is a `Fairing` that implements tus protocol on top of [`Rocket`](http
 #### Current version v0.2.0 [See changelog](https://github.com/kallebysantos/meteoritus/blob/main/CHANGELOG.md)
 ```toml
 [dependencies]
-rocket = "0.5.0-rc.2"
+rocket = "0.5.0"
 meteoritus = "0.2.0"
 ```
 

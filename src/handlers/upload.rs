@@ -73,7 +73,7 @@ impl<'r> FromRequest<'r> for UploadRequest<'r> {
         if tus_resumable_header.is_none()
             || tus_resumable_header.unwrap() != "1.0.0"
         {
-            return Outcome::Failure((
+            return Outcome::Error((
                 Status::BadRequest,
                 "Missing or invalid Tus-Resumable header",
             ));
@@ -83,14 +83,14 @@ impl<'r> FromRequest<'r> for UploadRequest<'r> {
             Some(value) => match value.parse::<u64>() {
                 Ok(value) => value,
                 Err(_) => {
-                    return Outcome::Failure((
+                    return Outcome::Error((
                         Status::BadRequest,
                         "Invalid Upload-Offset header",
                     ))
                 }
             },
             None => {
-                return Outcome::Failure((
+                return Outcome::Error((
                     Status::BadRequest,
                     "Missing Upload-Offset header",
                 ))
@@ -99,7 +99,7 @@ impl<'r> FromRequest<'r> for UploadRequest<'r> {
 
         match req.content_type() {
             None => {
-                return Outcome::Failure((
+                return Outcome::Error((
                     Status::BadRequest,
                     "Missing Content-Type header",
                 ))
@@ -111,7 +111,7 @@ impl<'r> FromRequest<'r> for UploadRequest<'r> {
                         "offset+octet-stream",
                     ) =>
             {
-                return Outcome::Failure((
+                return Outcome::Error((
                     Status::UnsupportedMediaType,
                     "Invalid Content-Type header",
                 ))
